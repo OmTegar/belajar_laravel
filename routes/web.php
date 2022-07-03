@@ -80,4 +80,4 @@ Route::get('//dasboards', function(){
     ]);
 })->middleware('auth');
 
-route::resource('/dashboard/posts', DashboardPostController::class)->middleware('auth');
+route::resource('/dasboards/posts', DashboardPostController::class)->middleware('auth');

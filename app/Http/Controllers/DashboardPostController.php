@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\post;
+use App\Models\category;
 use Illuminate\Http\Request;
 
 class DashboardPostController extends Controller
@@ -14,7 +15,9 @@ class DashboardPostController extends Controller
      */
     public function index()
     {
-        //
+        return view ('dasboards.posts.index', [
+            'posts' => post::where('user_id',auth()->user()->id)->get()
+        ]);
     }
 
     /**
@@ -24,7 +27,9 @@ class DashboardPostController extends Controller
      */
     public function create()
     {
-        //
+        return view('dasboards.posts.create', [
+            'categories' => category::all()
+        ]);
     }
 
     /**
@@ -35,7 +40,7 @@ class DashboardPostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request;
     }
 
     /**
@@ -46,7 +51,9 @@ class DashboardPostController extends Controller
      */
     public function show(post $post)
     {
-        //
+        return view('dasboards.posts.show' , [
+            'post' => $post
+        ]);
     }
 
     /**
@@ -82,4 +89,6 @@ class DashboardPostController extends Controller
     {
         //
     }
+
+    
 }
