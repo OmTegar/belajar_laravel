@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostControler;
 use App\Http\Controllers\LoginControler;
 use App\Http\Controllers\RegisterControler;
-use App\Http\Controllers\DasbordControler;
+use App\Http\Controllers\DashboardPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,11 +66,18 @@ route::get('/authors/{author:username}', function (User $author) {
     ]);
 });
 
-Route::get('/login', [LoginControler::class, 'login'])->middleware('guest');
+Route::get('/login', [LoginControler::class, 'login'])->name('login')->middleware('guest');
 Route::post('/login', [LoginControler::class, 'authenticate']);
+Route::post('/logout', [LoginControler::class, 'logout']);
 
 
-Route::get('/register', [RegisterControler::class, 'index']);
+Route::get('/register', [RegisterControler::class, 'index'])->middleware('guest');
 Route::post('/register', [RegisterControler::class, 'store']);
 
-Route::get('/dashboard', [DasbordControler::class, 'index']);
+Route::get('//dasboards', function(){
+    return view ('dasboards.index',[
+        'title'=>'dasboards'
+    ]);
+})->middleware('auth');
+
+route::resource('/dashboard/posts', DashboardPostController::class)->middleware('auth');

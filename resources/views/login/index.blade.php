@@ -24,7 +24,7 @@
           @csrf
 
           <div class="form-floating ">
-            <input type="email" class="form-control @error('email') is-invalid mt-2 mb-4 @enderror" id="email" name="email" placeholder="email" required value="{{ old('email') }}" autofocus>
+            <input type="email" class="form-control @error('email') is-invalid mt-2 mb-4 @enderror" id="email" name="email" placeholder="email" required value="{{ old('email') }}" >
             <label for="email">Email address</label>
             @error('email')
               <div class="invalid-tooltip">

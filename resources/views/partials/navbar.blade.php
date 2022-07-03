@@ -6,6 +6,8 @@ use views\postingan;
 
 // $categories = App\Models\category::where('name')->where('slug')->get();
 $categories = App\Models\category::get();
+$users = App\Models\user::get();
+
 @endphp
 
 
@@ -57,8 +59,10 @@ $categories = App\Models\category::get();
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                   <li><a class="dropdown-item {{ ($title === "BLOG") ? 'active' : ''  }} " href="/postingan">All post</a></li>
+                  <li><hr class="dropdown-divider"></li>
                   @foreach ($categories as $cateitem)
                   <li><a class="dropdown-item" href="/categories/{{ $cateitem->slug }}">{{ $cateitem->name }}</a></li>
+                  
                   @endforeach
 
 
@@ -79,13 +83,38 @@ $categories = App\Models\category::get();
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
 
+
             <ul class="navbar-nav">
+            @auth
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  welcome back, {{ auth()->user()->username }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/dasboards"><i class="bi bi-layout-text-window"></i> My Dashboard </a></li>
+                  <li><hr class="dropdown-divider"></li>
+
+                  <li>
+                    <form action="/logout" method="post">
+                      @csrf
+                      <button type="submit" class="dropdown-item">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                      </button>
+                    </form>
+                  </li>
+
+                </ul>
+              </li>
+            @else
               <li class="nav-item d-flex">
                 <a class="nav-link {{ ($title === "LOGIN") ? 'active' : ''  }} me-2" aria-current="page" href="/login"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
               </li>
-            </ul>
-            @php
 
+              @endauth
+            </ul>
+
+
+            @php
             // Route::get('/postingan', [PostControler::class, 'index']);
 
               //  $query = post::latest();
