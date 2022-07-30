@@ -74,10 +74,11 @@ Route::post('/logout', [LoginControler::class, 'logout']);
 Route::get('/register', [RegisterControler::class, 'index'])->middleware('guest');
 Route::post('/register', [RegisterControler::class, 'store']);
 
-Route::get('//dasboards', function(){
+Route::get('/dasboards', function(){
     return view ('dasboards.index',[
         'title'=>'dasboards'
     ]);
 })->middleware('auth');
 
+route::get('/dasboards/posts/checkSlug', [ DashboardPostController::class, 'checkSlug'])->middleware('auth');
 route::resource('/dasboards/posts', DashboardPostController::class)->middleware('auth');

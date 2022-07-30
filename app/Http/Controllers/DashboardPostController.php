@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\post;
 use App\Models\category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 class DashboardPostController extends Controller
 {
@@ -39,8 +41,25 @@ class DashboardPostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        return $request;
+    {   
+        $validateData = $request ->validate([
+            'title' => 'required|max:255',
+            'slug' => 'unique:posts',
+            'category_id' => 'required',
+            'image'=>'image|file|max:1024',
+            'body' => 'required|min:10'
+        ]);
+
+        if ($request->file('image')){
+            $validateData['image'] = $request->file('image')->store('post-images');
+        }
+
+        $validateData['user_id'] = auth()->user()->id;
+        $validateData['excerpt'] = str::limit(strip_tags($request->body),50);
+
+        post::create($validateData);
+
+        return redirect('/dasboards/posts')->with('success', 'Postingan Baru Berhasil Ditambahkan ');
     }
 
     /**
@@ -64,7 +83,10 @@ class DashboardPostController extends Controller
      */
     public function edit(post $post)
     {
-        //
+        return view('dasboards.posts.edit' , [
+            'categories' => category::all(),
+            'post' => $post
+        ]);
     }
 
     /**
@@ -76,7 +98,26 @@ class DashboardPostController extends Controller
      */
     public function update(Request $request, post $post)
     {
-        //
+        $rules = [
+            'title' => 'required|max:255',
+            // 'slug' => 'required|unique:posts',
+            'category_id' => 'required',
+            'body' => 'required|min:10'
+        ];
+
+        if($request->slug != $post->slug) {
+            $rules['slug'] = 'unique:posts';
+        }
+
+        $validateData = $request->validate($rules);
+
+        $validateData['user_id'] = auth()->user()->id;
+        $validateData['excerpt'] = str::limit(strip_tags($request->body),100);
+
+        post::where('id', $post->id)
+        ->update($validateData);
+
+        return redirect('/dasboards/posts')->with('success', 'Postingan Anda Berhasil diupdate ');
     }
 
     /**
@@ -87,8 +128,13 @@ class DashboardPostController extends Controller
      */
     public function destroy(post $post)
     {
-        //
+        post::destroy($post->id);
+        return redirect('/dasboards/posts')->with('success', 'Postingan Behasil Di hapus ');
     }
 
+    public function checkSlug(Request $request){
+        $slug = SlugService::createSlug(Post::class, 'slug',  $request->title);
+        return response()->json(['slug' =>$slug]);
+    }
     
 }

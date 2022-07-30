@@ -10,7 +10,18 @@
             <h2 class="mt-5">{{ $post->title }}</h2>
             <p>By. <a href="/authors/{{ $post->user->username }}">{{ $post->user->name }}</a> in 
             <a class="text-decoration-none" href="/categories/{{ $post->category->slug }}">{{ $post->category->name }}</a></p>
-            <img src="https://source.unsplash.com/1080x400?{{ $post->category->name }}" class="card-img-top rounded img-fluid" alt="...">
+            @if ($post->image)
+                <div style="max-height: 400px; overflow:hidden; ">
+                    <img src="{{ asset('storage/'. $post->image) }}"
+                    class="card-img-top rounded img-fluid mt-4" alt="...">
+                </div>
+
+                @else
+                    
+                <img src="https://source.unsplash.com/1080x400?{{ $post->category->name }}"
+                    class="card-img-top rounded img-fluid mt-4" alt="...">
+                @endif
+
             <article class="my-3 fs-5">
                 {!! $post->body !!}
             </article>

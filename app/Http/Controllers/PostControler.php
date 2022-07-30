@@ -20,7 +20,9 @@ class PostControler extends Controller
             // "posts"=> post::all(),
             // "posts"=> post::with(['user','category'])->latest()->get()
             // "posts"=> $posts->get(),
-            "posts"=> post::latest()->filter(request(['search']))->get(),
+            "posts"=> post::latest()
+            ->filter(request(['search', 'category']))
+            ->paginate(8),
             "active"=>"posts"
             // "name_category"=> category::all()
 

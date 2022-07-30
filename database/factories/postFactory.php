@@ -19,7 +19,7 @@ class postFactory extends Factory
         return [
             'title'=> $this->faker->sentence(mt_rand(2,8)),
             'slug'=> $this->faker->slug(),
-            'excerpt'=> $this->faker->paragraph(2),
+            'excerpt'=> $this->faker->paragraph(1),
             // 'body'=>'<p>'. implode('</p><p>', $this->faker->paragraphs(mt_rand(5,10))).'</p>',
             'body'=>collect($this->faker->paragraphs(mt_rand(5,10)))
             ->map(fn($p)=>"<p>$p</p>")

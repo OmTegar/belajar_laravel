@@ -1,6 +1,14 @@
 @extends('dasboards.layouts.main')
 
 @section('container')
+
+@if(session()->has('success'))
+      <div class="alert alert-success alert-dismissible fade show mt-4 col-lg-10" role="alert">
+        <strong>{{ session('success') }}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+@endif
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Dashboard {{ auth()->user()->name }}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
@@ -34,8 +42,14 @@
               <td>{{ $post->category->name }}</td>
               <td>
                 <a href="/dasboards/posts/{{ $post->slug }}" class="badge bg-info"><span data-feather="eye" class="align-text-bottom"></span></a>
-                <a href="" class="badge bg-warning"><span data-feather="edit" class="align-text-bottom"></span></a>
-                <a href="" class="badge bg-danger"><span data-feather="trash-2" class="align-text-bottom"></span></a>
+                <a href="/dasboards/posts/{{ $post->slug }}/edit" class="badge bg-warning"><span data-feather="edit" class="align-text-bottom"></span></a>
+                <form action="/dasboards/posts/{{ $post->slug }}" method="post" class="d-inline">
+                  @method('delete')
+                  @csrf
+                  <button type="submit" class="badge bg-danger border-0" onclick="return confirm('Melanjutkan Menghapus data')">
+                    <span data-feather="trash-2" class="align-text-bottom"></span>
+                  </button>
+                </form>
               </td>
             </tr>          
             @endforeach
