@@ -19,7 +19,7 @@
                 </form>
 
                 @if ($post->image)
-                <div style="max-height: 400px; overflow:hidden; ">
+                <div class="img-fluid mb-3 col-sm-5">
                     <img src="{{ asset('storage/'. $post->image) }}"
                     class="card-img-top rounded img-fluid mt-4" alt="...">
                 </div>

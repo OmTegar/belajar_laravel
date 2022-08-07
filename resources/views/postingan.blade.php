@@ -36,13 +36,11 @@
                         </div>
                         @if ($post->image)
                             <div style="max-height: 350px; overflow:hidden; ">
-                                <img src="{{ asset('storage/' . $post->image) }}"
-                                    class="card-img-top" alt="...">
+                                <img src="{{ asset('storage/' . $post->image) }}" class="card-img-top" alt="...">
                             </div>
                         @else
-                            
-                        <img src="https://source.unsplash.com/400x400?{{ $post->category->name }}" class="card-img-top"
-                            alt="...">
+                            <img src="https://source.unsplash.com/400x400?{{ $post->category->name }}" class="card-img-top"
+                                alt="...">
                         @endif
 
                         <div class="card-body">
@@ -50,8 +48,8 @@
                                 <h5 class="card-title">{{ $post->title }}</h5>
                             </a>
                             <small class="text-muted">
-                                <p>By. <a href="/authors/{{ $post->user->username }}"
-                                        class="text-decoration-none">{{ $post->user->name }} </a>
+                                <p>By. <a href="/authors/{{ $post->user->username }}" class="text-decoration-none">
+                                  {{ $post->user->name }} </a>
                                     {{ $post->created_at->diffForHumans() }}</p>
                             </small>
                             <p class="card-text ">{{ $post->excerpt }}</p>

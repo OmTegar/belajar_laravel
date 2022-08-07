@@ -3,10 +3,10 @@
 @extends('layouts.utama')
 
 @section('container')
-    <h2 class="mb-3">Halaman post category : {{ $category }}</h2>
+    <h2 class="mb-3">Halaman post dari : {{ $posts->user->username }} </h2>
     @if ($post->count())
         <div class="row d-flex justify-content-around p-5">
-            @foreach ($post as $post)
+            @foreach ($posts as $post)
                 <div class="col-3 mt-5">
                     <div class="card ">
                         <div class="categories ">

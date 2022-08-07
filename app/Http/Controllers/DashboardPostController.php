@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 
+use Illuminate\Support\Facades\Storage;
+
 class DashboardPostController extends Controller
 {
     /**
@@ -102,14 +104,23 @@ class DashboardPostController extends Controller
             'title' => 'required|max:255',
             // 'slug' => 'required|unique:posts',
             'category_id' => 'required',
+            'image'=>'image|file|max:1024',
             'body' => 'required|min:10'
         ];
+
 
         if($request->slug != $post->slug) {
             $rules['slug'] = 'unique:posts';
         }
 
         $validateData = $request->validate($rules);
+
+        if ($request->file('image')){
+            if($request->oldImage){
+                storage::delete($request->oldImage);
+            }
+            $validateData['image'] = $request->file('image')->store('post-images');
+        }
 
         $validateData['user_id'] = auth()->user()->id;
         $validateData['excerpt'] = str::limit(strip_tags($request->body),100);
@@ -127,7 +138,10 @@ class DashboardPostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(post $post)
-    {
+    {   
+        if($post->image){
+            storage::delete($post->image);
+        }
         post::destroy($post->id);
         return redirect('/dasboards/posts')->with('success', 'Postingan Behasil Di hapus ');
     }

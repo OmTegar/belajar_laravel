@@ -11,7 +11,7 @@
             <p>By. <a href="/authors/{{ $post->user->username }}">{{ $post->user->name }}</a> in 
             <a class="text-decoration-none" href="/categories/{{ $post->category->slug }}">{{ $post->category->name }}</a></p>
             @if ($post->image)
-                <div style="max-height: 400px; overflow:hidden; ">
+                <div class="img-fluid mb-3 col-sm-5">
                     <img src="{{ asset('storage/'. $post->image) }}"
                     class="card-img-top rounded img-fluid mt-4" alt="...">
                 </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\PostControler;
 use App\Http\Controllers\LoginControler;
 use App\Http\Controllers\RegisterControler;
 use App\Http\Controllers\DashboardPostController;
+use App\Http\Controllers\AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +63,7 @@ route::get('/authors/{author:username}', function (User $author) {
     return view('postingan', [
         'title' => "user Post",
         'posts' => $author->post->load(['category', 'user']),
-
+        // 'posts' => $author->post
     ]);
 });
 
@@ -82,3 +83,5 @@ Route::get('/dasboards', function(){
 
 route::get('/dasboards/posts/checkSlug', [ DashboardPostController::class, 'checkSlug'])->middleware('auth');
 route::resource('/dasboards/posts', DashboardPostController::class)->middleware('auth');
+
+route::resource('/dasboards/categories', AdminCategoryController::class)->except('show');
